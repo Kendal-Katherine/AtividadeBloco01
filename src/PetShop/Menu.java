@@ -1,22 +1,29 @@
 package PetShop;
 
 import java.io.IOException;
-import java.lang.ModuleLayer.Controller;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
+import PetShop.Model.Cadastro;
+import PetShop.Model.Domestico;
+import PetShop.Model.Silvestre;
+import PetShop.controller.CadastroController;
 import PetShop.util.Cores;
 
 public class Menu {
 
-	public static void main(String[] args) {
-		
-		Scanner leia = new Scanner(System.in);
-		
-	//	Controller cadastro = new Controller();
+	static Scanner leia = new Scanner(System.in);
 
-		int opcao, tipo, numeroDestino;
-		String nomePet, nomeTutor, domestico, silvestre, telefone;
+	public static void main(String[] args) {
+
+		CadastroController cadastro = new CadastroController();
+
+		int numero = 0, opcao = 0;
+		String nomePet, nomeTutor, telefone, tutor;
+
+		
+		
 
 		while (true) {
 
@@ -59,56 +66,104 @@ public class Menu {
 			switch (opcao) {
 
 			case 1:
-				System.out.println(Cores.TEXT_WHITE + " Cadatro do Pet\n\n");
-
 				System.out.println("Digite o nome do Tutor: ");
-				nomeTutor = leia.next();
-				leia.skip("\\R");
+				leia.nextLine();
+				nomeTutor = leia.nextLine();
 
 				System.out.println("Digite o número de telefone do tutor: ");
-				telefone = leia.nextLine();
+				telefone = leia.next();
 
 				System.out.println("Digite o nome do Pet: ");
-				nomePet = leia.nextLine();
+				nomePet = leia.next();
 
 				System.out.println("Digite o tipo de Pet (1 - Doméstico ou 2 - Silvestre): ");
-				tipo = leia.nextInt();
+				int tipo = leia.nextInt();
+
+				leia.nextLine();
 
 				switch (tipo) {
-				case 1 -> {
-					System.out.println("Digite a espécie do Pet: ");
-					domestico = leia.nextLine();
-				}
-				case 2 -> {
-					System.out.println("Digite o dia do aniversário da conta: ");
-					silvestre = leia.nextLine();
-
-				}
+				case 1:
+					cadastro.cadastrar(new Domestico(cadastro.gerarNumero(), nomeTutor, telefone, nomePet, tipo));
+					break;
+				case 2:
+					cadastro.cadastrar(new Silvestre(cadastro.gerarNumero(), nomeTutor, telefone, nomePet, tipo));
+					break;
 				}
 				keyPress();
 				break;
+
 			case 2:
 				System.out.println(Cores.TEXT_WHITE + "Listar todos os Cadastros\n\n");
-				
+				cadastro.listarTodas();
 				keyPress();
 				break;
 			case 3:
-				System.out.println(Cores.TEXT_WHITE + "Buscar Cadastro por Pet\n\n");
-				
+				System.out.println(Cores.TEXT_WHITE + "Consultar dados do Cadastro - por número\n\n");
+
+				System.out.println("Digite o número da conta: ");
+				numero = leia.nextInt();
+
+				cadastro.procurarPorNumero(numero);
 				keyPress();
 				break;
 			case 4:
 				System.out.println(Cores.TEXT_WHITE + "Atualizar dados do cadastro do Pet\n\n");
-				
+
+				System.out.println("Digite o número do cadastro: ");
+				numero = leia.nextInt();
+
+				Optional<Cadastro> numeroCadastro = cadastro.buscarNaCollection(numero);
+
+				if (numeroCadastro.isPresent()) {
+
+					System.out.println("Digite o nome do Tutor: ");
+					leia.nextLine(); 
+					nomeTutor = leia.nextLine(); 
+
+					System.out.println("Digite o número de telefone do tutor: ");
+					telefone = leia.next();
+
+					System.out.println("Digite o nome do Pet: ");
+					nomePet = leia.next();
+
+					System.out.println("Digite o tipo de Pet (1 - Doméstico ou 2 - Silvestre): ");
+					tipo = leia.nextInt();
+
+					switch (tipo) {
+					case 1 -> {
+
+						cadastro.atualizar(new Domestico(numero, nomeTutor, telefone, nomePet, tipo));
+					}
+					case 2 -> {
+						cadastro.atualizar(new Silvestre(numero, nomeTutor, telefone, nomePet, tipo));
+					}
+					}
+				}
+
+				else {
+					System.out.println("O cadastro número: " + numero + " não foi encontrado!");
+				}
+
 				keyPress();
 				break;
 			case 5:
 				System.out.println(Cores.TEXT_WHITE + "Apagar cadastro \n\n");
 
+				System.out.println("Digite o número do Cadastro: ");
+				numero = leia.nextInt();
+
+				cadastro.deletar(numero);
+
 				keyPress();
 				break;
 			case 6:
 				System.out.println(Cores.TEXT_WHITE + "Consulta por Titular \n\n");
+
+				System.out.println("Digite o nome do Tutor do pet: ");
+				leia.skip("\\R");
+				tutor = leia.nextLine();
+
+				cadastro.procurarPorTutor(tutor);
 
 				keyPress();
 				break;
@@ -124,22 +179,26 @@ public class Menu {
 	}
 
 	public static void sobre() {
-		System.out.println("****************************************************************************");
+		System.out.println(Cores.TEXT_WHITE + Cores.ANSI_PURPLE_BACKGROUND_BRIGHT
+				+ "****************************************************************************");
 		System.out.println("Projeto desenvolvido por: Kendal Katherine Correia                          ");
 		System.out.println("Apoio Generation Brasil - generation@generation.org                         ");
 		System.out.println("https://github.com/Kendal-Katherine/projeto_final_bloco_01                  ");
-		System.out.println("****************************************************************************");
+		System.out.println(
+				"****************************************************************************" + Cores.TEXT_RESET);
 	}
 
 	public static void keyPress() {
 		try {
 
-			System.out.println("\n\nPreesione a tecla Enter para continuar...");
+			System.out.println(Cores.TEXT_WHITE + Cores.ANSI_PURPLE_BACKGROUND_BRIGHT
+					+ "\n\nPressione a tecla Enter para continuar..." + Cores.TEXT_RESET);
 			System.in.read();
 
 		} catch (IOException e) {
 
-			System.out.println("Você pressionou uma tecla inválida!");
+			System.out.println(Cores.TEXT_WHITE + Cores.ANSI_PURPLE_BACKGROUND_BRIGHT
+					+ "Você pressionou uma tecla inválida!" + Cores.TEXT_RESET);
 
 		}
 	}

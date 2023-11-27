@@ -6,31 +6,43 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import PetShop.Model.Cadastro;
+
 import PetShop.Repository.CadastroRepository;
 
-public abstract class Controller implements CadastroRepository{
-	
+public class CadastroController implements CadastroRepository {
+
 	private ArrayList<Cadastro> listaCadastros = new ArrayList<Cadastro>();
-	
+
 	int numero = 0;
 
 	@Override
+	public Optional<Cadastro> procurarPorNumero(int numero) {
+		Optional<Cadastro> cadastro = buscarNaCollection(numero);
+
+		if (cadastro.isPresent()) {
+			cadastro.get().visualizar();
+		} else {
+			System.out.println("O cadastro número: " + numero + " não foi encontrado!");
+		}
+
+		return cadastro;
+	}
+
+	@Override
 	public void procurarPorTutor(String nomeTutor) {
-		List<Cadastro> listaNomes = listaCadastros.stream()
-				.filter(c -> c.getNomeTutor().contains(nomeTutor))
+		List<Cadastro> listaNomes = listaCadastros.stream().filter(n -> n.getNomeTutor().contains(nomeTutor))
 				.collect(Collectors.toList());
-		
-		for(var cadastro : listaNomes)
+
+		for (var cadastro : listaNomes)
 			cadastro.visualizar();
 	}
 
-	
 	@Override
 	public void listarTodas() {
 		for (var cadastro : listaCadastros) {
 			cadastro.visualizar();
 		}
-		
+
 	}
 
 	@Override
@@ -41,42 +53,46 @@ public abstract class Controller implements CadastroRepository{
 
 	@Override
 	public void atualizar(Cadastro cadastro) {
-		Optional<Cadastro> buscaCadastro = buscarNaCollection(cadastro.getNomeTutor());
+		Optional<Cadastro> buscaCadastro = buscarNaCollection(cadastro.getNumero());
 
 		if (buscaCadastro.isPresent()) {
 			listaCadastros.set(listaCadastros.indexOf(buscaCadastro.get()), cadastro);
 			System.out.println("O cadastro do Pet: " + cadastro.getNomePet() + " foi atualizado com sucesso!");
-		} else
+		} else {
 			System.out.println("O cadastro do Pet: " + cadastro.getNomePet() + " não foi encontrado!");
 
+		}
 	}
-		
-	
 
-	@Override
-	public void deletar(String nomeTutor) {
-		Optional<Cadastro> cadastro = buscarNaCollection(cadastro.get());
+	public void deletar(int numero) {
+
+		Optional<Cadastro> cadastro = buscarNaCollection(numero);
 
 		if (cadastro.isPresent())
-			if (listaCadastros.remove(cadastro.get()) == true)
-				System.out.println("O cadastro do Pet foi excluído com sucesso!");
+			if (listaCadastros.remove(cadastro.get())) {
+				System.out.println("O cadastro do Pet: " + numero + " foi excluído com sucesso!");
+			} else {
+				System.out.println("O cadastro do Pet: " + numero + " não foi encontrado!");
+			}
 
-			else
-				System.out.println("O cadastro do Pet não foi encontrado!");
-
-		
 	}
-	
-	protected abstract Optional<Cadastro> buscarNaCollection(Cadastro cadastro);
 
+	public int gerarNumero() {
+		return ++numero;
+	}
 
-	private Optional<Cadastro> buscarNaCollection(String nomeTutor) {
+	public Optional<Cadastro> buscarNaCollection(int numero) {
 		for (var cadastro : listaCadastros) {
-			if (cadastro.getNomeTutor() == nomeTutor)
+			if (cadastro.getNumero() == numero) {
 				return Optional.of(cadastro);
+			}
 		}
-
 		return Optional.empty();
+	}
+
+	public Cadastro get() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,6 +1,6 @@
 package PetShop.Model;
 
-import java.util.ArrayList;
+import PetShop.util.Cores;
 
 public class Cadastro {
 
@@ -8,13 +8,14 @@ public class Cadastro {
 	private String telefone;
 	private String nomePet;
 	private int tipo;
+	private int numero;
 
-	public Cadastro(String nomeTutor, String telefone, String nomePet, int tipo) {
-		super();
+	public Cadastro(int numero, String nomeTutor, String telefone, String nomePet, int tipo) {
 		this.nomeTutor = nomeTutor;
 		this.telefone = telefone;
 		this.nomePet = nomePet;
 		this.tipo = tipo;
+		this.numero = numero;
 	}
 
 	public String getNomeTutor() {
@@ -57,16 +58,20 @@ public class Cadastro {
 		case 2 -> tipo = "Silvestre";
 		}
 
-		System.out.println("\n\n******************************************");
-		System.out.println("CADASTRO DO PET: ");
-		System.out.println("******************************************");
+		System.out.println(Cores.TEXT_WHITE + Cores.ANSI_PURPLE_BACKGROUND_BRIGHT + 
+				       "\n\n******************************************");
+		System.out.println("         Cadastro do Pet:                 ");
+		System.out.println("******************************************" + Cores.TEXT_RESET);
+		System.out.println("Número do cadastro: " + this.numero);
 		System.out.println("Nome do Tutor: " + this.nomeTutor);
 		System.out.println("Telefone do Tutor: " + this.telefone);
-		System.out.println("Titular da conta: " + this.nomePet);
+		System.out.println("Nome do Pet: " + this.nomePet);
 		System.out.println("Tipo de Pet: " + tipo);
-				
+
 	}
 
+	public int getNumero() {
+		return this.numero;
+	}
 
-	
 }

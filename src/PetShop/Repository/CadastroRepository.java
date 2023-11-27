@@ -1,14 +1,19 @@
 package PetShop.Repository;
 
 import PetShop.Model.Cadastro;
+import java.util.Optional;
 
 public interface CadastroRepository {
-	
-	public void procurarPorTutor(String nomeTutor);
-	public void listarTodas();
-	public void cadastrar(Cadastro cadastro);
-	public void atualizar(Cadastro cadastro);
-	public void deletar(String nomeTutor);
-	
 
+	Optional<Cadastro> procurarPorNumero(int numero);
+
+	void listarTodas();
+
+	void cadastrar(Cadastro cadastro);
+
+	void atualizar(Cadastro cadastro);
+
+	void procurarPorTutor(String nomeTutor);
+
+	void deletar(int numero);
 }
