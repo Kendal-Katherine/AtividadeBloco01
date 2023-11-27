@@ -67,7 +67,7 @@ public class Menu {
 				telefone = leia.nextLine();
 
 				System.out.println("Digite o nome do Pet: ");
-				//leia.skip("\\R");
+				
 				nomePet = leia.nextLine();
 
 				System.out.println("Digite o tipo de Pet (1 - Doméstico ou 2 - Silvestre): ");
