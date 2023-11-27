@@ -1,6 +1,7 @@
 package PetShop;
 
 import java.io.IOException;
+import java.lang.ModuleLayer.Controller;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,11 +12,12 @@ public class Menu {
 	public static void main(String[] args) {
 		
 		Scanner leia = new Scanner(System.in);
+		
+	//	Controller cadastro = new Controller();
 
 		int opcao, tipo, numeroDestino;
 		String nomePet, nomeTutor, domestico, silvestre, telefone;
-	
-		
+
 		while (true) {
 
 			System.out.println(Cores.TEXT_WHITE + Cores.ANSI_PURPLE_BACKGROUND_BRIGHT
@@ -46,7 +48,7 @@ public class Menu {
 				opcao = 0;
 
 			}
-			
+
 			if (opcao == 0) {
 				System.out.println(Cores.TEXT_WHITE_BOLD + "PetShop KKC!");
 				sobre();
@@ -62,17 +64,15 @@ public class Menu {
 				System.out.println("Digite o nome do Tutor: ");
 				nomeTutor = leia.next();
 				leia.skip("\\R");
-				
+
 				System.out.println("Digite o número de telefone do tutor: ");
 				telefone = leia.nextLine();
 
 				System.out.println("Digite o nome do Pet: ");
-				
 				nomePet = leia.nextLine();
 
 				System.out.println("Digite o tipo de Pet (1 - Doméstico ou 2 - Silvestre): ");
 				tipo = leia.nextInt();
-				
 
 				switch (tipo) {
 				case 1 -> {
@@ -82,7 +82,7 @@ public class Menu {
 				case 2 -> {
 					System.out.println("Digite o dia do aniversário da conta: ");
 					silvestre = leia.nextLine();
-					
+
 				}
 				}
 				keyPress();
@@ -94,12 +94,11 @@ public class Menu {
 				break;
 			case 3:
 				System.out.println(Cores.TEXT_WHITE + "Buscar Cadastro por Pet\n\n");
-
+				
 				keyPress();
 				break;
 			case 4:
 				System.out.println(Cores.TEXT_WHITE + "Atualizar dados do cadastro do Pet\n\n");
-
 				
 				keyPress();
 				break;
@@ -110,20 +109,19 @@ public class Menu {
 				break;
 			case 6:
 				System.out.println(Cores.TEXT_WHITE + "Consulta por Titular \n\n");
-				
+
 				keyPress();
 				break;
-			
+
 			default:
 				System.out.println(Cores.TEXT_RED_BOLD + "\nOpção Inválida!\n" + Cores.TEXT_RESET);
 				keyPress();
 				break;
 
-			}}
-
+			}
 		}
 
-	
+	}
 
 	public static void sobre() {
 		System.out.println("****************************************************************************");
@@ -145,7 +143,5 @@ public class Menu {
 
 		}
 	}
-
-	
 
 }
